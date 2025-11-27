@@ -1,0 +1,18 @@
+{
+  "name": "playwright-test-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm install pino pino-pretty && npm install --save-dev playwright && npm init playwright@latest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^24.10.1",
+    "pino": "^10.1.0",
+    "pino-pretty": "^13.1.2"
+  }
+}
