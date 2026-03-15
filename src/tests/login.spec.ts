@@ -1,23 +1,26 @@
 import { test, expect } from '@playwright/test';
-import loginJSON from '../../payloads/login.json' with { type: "json" };
 import { logApi } from '../utils/apiLogger';
-import { login } from '../utils/interfaces';
+import { ENV } from '../utils/environments';
+import { ILoginResponse } from '../utils/interfaces';
 
-test.describe("login Api diggipymes", () => {
+test.describe("Validate login diggipymes", () => {
 
-  test('valid login', async ({ request }) => {
+  test('Validating endpoint response for login', async ({ request }) => {
 
-    const requestOptions = {
-      data: loginJSON
+    const requestOption = {
+      data: {
+        email: ENV.LOGIN_EMAIL,
+        password: ENV.LOGIN_PASSWORD
+      }
     }
 
-    const response = await request.post("https://calidad-v1-security.diggipymes.com/api/auth/login", requestOptions)
-    await logApi(response, "POST")
-    await expect(response).toBeOK();
+    const response = await request.post(ENV.API_URL, requestOption);
+    const responseBody = await logApi<ILoginResponse>(response, "POST")
 
-    // para mostrar mas informacion del request body
-    const responseBody = (await response.json()) as login;
-    console.log(JSON.stringify(responseBody, null, 2))
+    expect(response.status()).toBe(200);
+    expect(responseBody.statusCode).toBe(200);
+    expect(responseBody.message).toBe("Success operation");
+    expect(responseBody.data.token_type).toBe("Bearer");
+    expect(responseBody.data.user.email).toBeTruthy();
   })
-
 })

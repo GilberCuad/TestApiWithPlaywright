@@ -1,10 +1,10 @@
 import { Logs } from "./logs";
 import { APIResponse } from "@playwright/test";
 
-export async function logApi(
+export async function logApi<T = unknown>(
     response: APIResponse,
     method: "GET" | "POST" | "PATCH" | "PUT" | "DELETE"
-): Promise<void> {
+): Promise<T> {
     let body;
     try {
         body = await response.json();
@@ -20,9 +20,9 @@ export async function logApi(
     const bodyFormatted =
         typeof body === "object"
             ? JSON.stringify(body, null, 2)
-                  .split("\n")
-                  .map((line, index) => (index === 0 ? line : `               ${line}`))
-                  .join("\n")
+                .split("\n")
+                .map((line, index) => (index === 0 ? line : `               ${line}`))
+                .join("\n")
             : body;
 
     const messageLogs = `
@@ -36,9 +36,7 @@ export async function logApi(
 ╚════════════════════════════════════════════════════════════╝
     `;
 
-    console.log(`
-  URL:         (${method}) ${response.url()}
-  Status:      ${response.status()} ${response.statusText()}
-    `);
     Logs.info(messageLogs);
+
+    return body as T;
 }
