@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        LOGIN_EMAIL    = credentials('LOGIN_EMAIL')
+        LOGIN_PASSWORD = credentials('LOGIN_PASSWORD')
+        API_URL        = credentials('API_URL')
+    }
+
     stages {
         stage('Install dependencies') {
             steps {
@@ -18,13 +24,12 @@ pipeline {
 
     post {
         always {
+            archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
             publishHTML(target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
                 reportDir: 'playwright-report',
                 reportFiles: 'index.html',
-                reportName: 'Playwright Report'
+                reportName: 'Playwright Report',
+                keepAll: true
             ])
         }
     }
