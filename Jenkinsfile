@@ -11,7 +11,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh 'npm install'
-                sh 'npx playwright install --with-deps'
+                sh 'npx playwright install chromium'
             }
         }
 
