@@ -1,8 +1,6 @@
 pipeline {
     agent any
 
-    options {}
-
     environment {
         LOGIN_EMAIL    = credentials('LOGIN_EMAIL')
         LOGIN_PASSWORD = credentials('LOGIN_PASSWORD')
