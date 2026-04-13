@@ -1,6 +1,8 @@
 pipeline {
     agent any
 
+    options {}
+
     environment {
         LOGIN_EMAIL    = credentials('LOGIN_EMAIL')
         LOGIN_PASSWORD = credentials('LOGIN_PASSWORD')
@@ -8,6 +10,15 @@ pipeline {
     }
 
     stages {
+
+        stage('Fix CSP') {
+            steps {
+                script {
+                    System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")
+                }
+            }
+        }
+
         stage('Install dependencies') {
             steps {
                 sh 'npm install'
